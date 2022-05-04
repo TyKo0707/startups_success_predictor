@@ -25,15 +25,11 @@ df3['permalink'] = s
 df3.rename(columns={'permalink': 'company_index'}, inplace=True)
 
 # Replacing status data with numbers
-df3.status = df3.status.replace(['operating'], 0.5)
-df3.status = df3.status.replace(['acquired'], 0.6)
+df3.status = df3.status.replace(['operating', 'acquired'], 1)
 df3.status = df3.status.replace(['closed'], 0)
-df3.status = df3.status.replace(['ipo'], 1)
+df3.status = df3.status.replace(['ipo'], 2)
 
 df3.funding_total_usd = df3.funding_total_usd.astype('float64').apply(int)
-
-# Splitting our category_list column by '|' and save this list to column
-df3.category_list = df3.category_list.str.split('|')
 
 # Change incorrect country codes to correct
 df3.country_code = df3.country_code.replace(['ROM'], 'ROU')
@@ -46,4 +42,4 @@ df3.country_code = list_of_continents
 df3.rename(columns={'country_code': 'region'}, inplace=True)
 
 # Saving out new dataset
-df3.to_csv('main_dataset.csv')
+df3.to_csv('../main_dataset.csv')
