@@ -62,9 +62,13 @@ df = normalize(df, 'funding_total_usd')
 
 df = pd.get_dummies(df, columns=['region', 'category_list'])
 
+df.to_csv('../preprocessed_dataset.csv')
+
 # Choosing data and answers from dataframe
 X = df.iloc[:, df.columns != 'status'].values
 y = df.iloc[:, df.columns == 'status'].values
+np.save(TRAIN_TEST_PATH + 'x_full.npy', X)
+np.save(TRAIN_TEST_PATH + 'y_full.npy', y)
 
 # Creating and saving train and test samples
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
