@@ -25,8 +25,8 @@ df3['permalink'] = s
 df3.rename(columns={'permalink': 'company_index'}, inplace=True)
 
 # Replacing status data with numbers
-df3.status = df3.status.replace(['operating', 'acquired'], 1)
 df3.status = df3.status.replace(['closed'], 0)
+df3.status = df3.status.replace(['operating', 'acquired'], 1)
 df3.status = df3.status.replace(['ipo'], 2)
 
 df3.funding_total_usd = df3.funding_total_usd.astype('float64').apply(int)
@@ -40,6 +40,12 @@ df3.country_code = df3.country_code.replace(['TAN'], 'TZA')
 list_of_continents = [country_to_continent(i) for i in df3.country_code]
 df3.country_code = list_of_continents
 df3.rename(columns={'country_code': 'region'}, inplace=True)
+
+# get the description (count, mean, standard deviation, min and max value, quartiles) of numerical data
+print(df3.describe())
+
+# get the description (count, unique, top, freq) of categorical data
+print(df3.describe(include=['O']))
 
 # Saving out new dataset
 df3.to_csv('../main_dataset.csv')
