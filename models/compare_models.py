@@ -1,4 +1,4 @@
-import pandas
+import pickle
 import numpy as np
 import pandas as pd
 from environs import Env
@@ -23,13 +23,12 @@ env = Env()
 env.read_env()
 TRAIN_TEST_PATH = env.str("TRAIN_TEST_PATH")
 PLOTS_PATH = env.str("PLOTS_PATH")
+MODELS_PATH = env.str("MODELS_PATH")
 SEED = env.str("SEED")
 
 # Load train datasets
 X_train = np.load(TRAIN_TEST_PATH + 'x_full.npy')
 y_train = np.load(TRAIN_TEST_PATH + 'y_full.npy')
-
-columns = pd.read_csv('../preprocessed_dataset.csv').columns
 
 # Create dictionary to hold classifiers, it's names and the results of it's learning
 comp_models = {'CART': [DecisionTreeClassifier()], 'LR': [LogisticRegression()], 'LDA': [LinearDiscriminantAnalysis()],
@@ -40,7 +39,10 @@ for name, model in comp_models.items():
     kfold = model_selection.KFold(n_splits=8)
     results = model_selection.cross_val_score(model[0], X_train, y_train, cv=kfold, scoring='accuracy')
     comp_models[name].append(results)
+    filename = MODELS_PATH + f'{name}.sav'
+    pickle.dump(model, open(filename, 'wb'))
     print(f'{name}: {results.mean()} {results.std()}')
+
 
 # Build and save a plot
 fig = plt.figure()
