@@ -43,7 +43,6 @@ for name, model in comp_models.items():
     pickle.dump(model, open(filename, 'wb'))
     print(f'{name}: {results.mean()} {results.std()}')
 
-
 # Build and save a plot
 fig = plt.figure()
 fig.suptitle('Box-plot of the results of different models')
