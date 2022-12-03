@@ -21,9 +21,6 @@ def normalize(df, by_col):
 
 df = pd.read_csv(MAIN_DATASET_PATH)
 
-# Dropping useless columns
-df.drop("Unnamed: 0", axis=1, inplace=True)
-
 # Splitting our category_list column by '|' and save this list to column
 df.category_list = df.category_list.str.split('|')
 
@@ -62,7 +59,7 @@ df = normalize(df, 'funding_total_usd')
 
 df = pd.get_dummies(df, columns=['region', 'category_list'])
 
-df.to_csv('../preprocessed_dataset.csv')
+df.to_csv('../preprocessed_dataset.csv', index=False)
 
 # Choosing data and answers from dataframe
 X = df.iloc[:, df.columns != 'status'].values

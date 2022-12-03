@@ -48,4 +48,4 @@ print(df3.describe())
 print(df3.describe(include=['O']))
 
 # Saving out new dataset
-df3.to_csv('../main_dataset.csv')
+df3.to_csv('../main_dataset.csv', index=False)
