@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import pickle
 from environs import Env
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -8,12 +9,14 @@ env = Env()
 env.read_env()
 TRAIN_TEST_PATH = env.str("TRAIN_TEST_PATH")
 MAIN_DATASET_PATH = env.str("MAIN_DATASET_PATH")
+MODELS_PATH = env.str("MODELS_PATH")
 
 
 def normalize(df, by_col):
     # Normalize the DF using std_scale
     scaler = StandardScaler()
     dates_scaled = scaler.fit_transform(df[by_col].values.reshape((df.shape[0], 1)))
+    pickle.dump(scaler, open(MODELS_PATH + f'{by_col}_scaler.pkl', 'wb'))
     df[by_col] = dates_scaled
 
     return df
