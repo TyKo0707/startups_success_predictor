@@ -22,7 +22,7 @@ def model_builder(hp):
     # Choose an optimal value between 32-512
     hp_units = hp.Int('units', min_value=32, max_value=256, step=32)
     model.add(keras.layers.Dense(units=hp_units, activation='relu'))
-    model.add(keras.layers.Dense(3))
+    model.add(keras.layers.Dense(3, activation='softmax'))
 
     # Tune the learning rate for the optimizer
     # Choose an optimal value from 0.01, 0.001, or 0.0001
