@@ -42,10 +42,10 @@ df3.country_code = list_of_continents
 df3.rename(columns={'country_code': 'region'}, inplace=True)
 
 # get the description (count, mean, standard deviation, min and max value, quartiles) of numerical data
-print(df3.describe())
+print(df3.describe().transpose())
 
 # get the description (count, unique, top, freq) of categorical data
-print(df3.describe(include=['O']))
+print(df3.describe(include=['O']).transpose())
 
 # Saving out new dataset
 df3.to_csv('../main_dataset.csv', index=False)
