@@ -10,6 +10,7 @@ env.read_env()
 TRAIN_TEST_PATH = env.str("TRAIN_TEST_PATH")
 MAIN_DATASET_PATH = env.str("MAIN_DATASET_PATH")
 MODELS_PATH = env.str("MODELS_PATH")
+EXT_MAIN_DATASET_PATH = env.str("EXT_MAIN_DATASET_PATH")
 
 
 def normalize(df, by_col):
@@ -22,9 +23,8 @@ def normalize(df, by_col):
     return df
 
 
-df = pd.read_csv(MAIN_DATASET_PATH)
+df = pd.read_csv(EXT_MAIN_DATASET_PATH)
 
-# Splitting our category_list column by '|' and save this list to column
 df.category_list = df.category_list.str.split('|')
 
 # get most frequent categories in dataframe and calculate it's quartiles
@@ -49,8 +49,6 @@ for index, row in df.iterrows():
     except:
         new_val = 0
     df.loc[index, "category_list"] = new_val
-
-df.drop(['name', 'company_index'], axis=1, inplace=True)
 
 # Converting date to numeric type
 df.founded_at = pd.to_datetime(df.founded_at, format='%Y-%m-%d', errors='coerce').view('int64')

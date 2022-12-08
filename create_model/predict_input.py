@@ -11,52 +11,42 @@ TRAIN_TEST_PATH = env.str("TRAIN_TEST_PATH")
 MODELS_PATH = env.str("MODELS_PATH")
 PREPROCESSED_DATASET = env.str("PREPROCESSED_DATASET")
 
-columns = list(pd.read_csv(PREPROCESSED_DATASET).columns.values)
-columns.remove('status')
+funding_total_usd_scaler = pickle.load(open(MODELS_PATH + 'funding_total_usd_scaler.pkl', 'rb'))
+funding_rounds_scaler = pickle.load(open(MODELS_PATH + 'funding_rounds_scaler.pkl', 'rb'))
+founded_at_scaler = pickle.load(open(MODELS_PATH + 'founded_at_scaler.pkl', 'rb'))
+
+columns = ['funding_total_usd', 'funding_rounds', 'founded_at', 'region_Africa', 'region_Asia', 'region_Europe',
+           'region_North America', 'region_Oceania', 'region_South America', 'category_list_0', 'category_list_1',
+           'category_list_2', 'category_list_3']
+
+# with open(MODELS_PATH + 'startup_success.json', 'r') as json_file:
+#     loaded_model_json = json_file.read()
+#     model = model_from_json(loaded_model_json)
+# # load weights into new model
+# model.load_weights(MODELS_PATH + "startup_success.h5")
+model = pickle.load(open(MODELS_PATH + 'CART.sav', 'rb'))[0]
 
 
-def input_data():
-    funding_total_usd_scaler = pickle.load(open(MODELS_PATH + 'funding_total_usd_scaler.pkl', 'rb'))
-    funding_rounds_scaler = pickle.load(open(MODELS_PATH + 'funding_rounds_scaler.pkl', 'rb'))
-    founded_at_scaler = pickle.load(open(MODELS_PATH + 'founded_at_scaler.pkl', 'rb'))
+def predict_output(data):
+    input_data = np.zeros(len(columns))
 
-    output_data = np.zeros(len(columns))
+    region = data[0]
+    input_data[3 + region] = 1
 
-    # input the index of the region
-    region_ind = int(input(
-        "Input number with your region: \n1. Africa\n2. Asia\n3. Europe\n4. North America\n5. Oceania\n6. South America"))
-    output_data[3 + region_ind] = 1
+    funding = funding_total_usd_scaler.transform([[float(data[1]) * 1e6]])[0][0]
+    input_data[0] = funding
 
-    funding = float(input('Input expected size of funding (in millions): ')) * 1e6
-    funding = funding_total_usd_scaler.transform([[funding]])[0][0]
-    print(funding)
+    funding_rounds = funding_rounds_scaler.transform([[int(data[2])]])[0][0]
+    input_data[1] = funding_rounds
 
-    funding_rounds = int(input('Input expected size of funding rounds: '))
-    funding_rounds = funding_rounds_scaler.transform([[funding_rounds]])[0][0]
-    print(funding_rounds)
+    date_foundation = founded_at_scaler.transform([[pd.to_datetime(data[3], format='%Y-%m-%d', errors='coerce')
+                                                  .value]])[0][0]
+    input_data[2] = date_foundation
 
-    output_data[0] = funding
-    output_data[1] = funding_rounds
+    input_data[9] = 1
 
-    date_foundation = input('Input date of foundation of the company (in format Y-m-d): ')
-    date_foundation = founded_at_scaler.transform([[pd.to_datetime(date_foundation, format='%Y-%m-%d', errors='coerce')\
-                                                    .value]])[0][0]
-    print(date_foundation)
-    output_data[2] = date_foundation
-
-    category = input('Input the category of the company: ')
-    output_data[10] = 1
-
-    return output_data.reshape(1, -1)
+    # return [round((i * 100), 2) for i in model.predict(input_data.reshape(1, -1))[0]]
+    return model.predict_proba(input_data.reshape(1, -1))[0].argmax()
 
 
-with open(MODELS_PATH + 'startup_success.json', 'r') as json_file:
-    loaded_model_json = json_file.read()
-    model = model_from_json(loaded_model_json)
-# load weights into new model
-model.load_weights(MODELS_PATH + "startup_success.h5")
-
-input_data = input_data()
-
-prediction = model.predict(input_data)
-print(prediction[0])
+print(predict_output([1, '4', '2', '2004-08-07']))
