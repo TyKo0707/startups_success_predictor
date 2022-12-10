@@ -1,5 +1,4 @@
 import pandas as pd
-from keras.models import model_from_json
 import numpy as np
 import pickle
 from environs import Env
