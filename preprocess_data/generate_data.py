@@ -89,7 +89,9 @@ if __name__ == '__main__':
         return new_df
 
 
-    new_status_closed, new_status_ipo = generate_data(df, 30000, 0), generate_data(df, 30000, 2)
+    new_status_closed, new_status_ipo = generate_data(df, 60000, 0), generate_data(df, 60000, 2)
+    new_data = generate_data(df, 30000, 1)
+    new_data.category_list = ['|'.join([i]) for i in new_data.category_list.values]
     new_status_closed.category_list = ['|'.join([i]) for i in new_status_closed.category_list.values]
     new_status_ipo.category_list = ['|'.join([i]) for i in new_status_ipo.category_list.values]
 
@@ -97,5 +99,6 @@ if __name__ == '__main__':
 
     df = df.append(new_status_closed, ignore_index=True)
     df = df.append(new_status_ipo, ignore_index=True)
+    df = df.append(new_data, ignore_index=True)
     shuffled_df = df.sample(frac=1)
-    shuffled_df.to_csv('../extended_main_dataset.csv', index=False)
+    shuffled_df.to_csv('../extended_main_dataset_1.csv', index=False)
