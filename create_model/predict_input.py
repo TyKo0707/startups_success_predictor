@@ -18,12 +18,7 @@ columns = ['funding_total_usd', 'funding_rounds', 'founded_at', 'region_Africa',
            'region_North America', 'region_Oceania', 'region_South America', 'category_list_0', 'category_list_1',
            'category_list_2', 'category_list_3']
 
-# with open(MODELS_PATH + 'startup_success.json', 'r') as json_file:
-#     loaded_model_json = json_file.read()
-#     model = model_from_json(loaded_model_json)
-# # load weights into new model
-# model.load_weights(MODELS_PATH + "startup_success.h5")
-model = pickle.load(open(MODELS_PATH + 'CART.sav', 'rb'))[0]
+model = pickle.load(open(MODELS_PATH + 'decision_tree.sav', 'rb'))
 
 
 def predict_output(data):
@@ -46,6 +41,3 @@ def predict_output(data):
 
     # return [round((i * 100), 2) for i in model.predict(input_data.reshape(1, -1))[0]]
     return model.predict_proba(input_data.reshape(1, -1))[0].argmax()
-
-
-print(predict_output([1, '4', '2', '2004-08-07']))
