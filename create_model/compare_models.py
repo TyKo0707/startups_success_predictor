@@ -1,22 +1,16 @@
-import pickle
+from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn import model_selection
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 from environs import Env
-import matplotlib.pyplot as plt
-from sklearn import model_selection
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.naive_bayes import GaussianNB
-import warnings
-
-
-def warn(*args, **kwargs):
-    pass
-
-
-warnings.warn = warn
 
 # Get environmental data
 env = Env()
@@ -29,31 +23,63 @@ SEED = env.str("SEED")
 # Load train datasets
 X_train_full = np.load(TRAIN_TEST_PATH + 'x_full.npy')
 y_train_full = np.load(TRAIN_TEST_PATH + 'y_full.npy')
-X_train = np.load(TRAIN_TEST_PATH + 'x_train.npy')
-y_train = np.load(TRAIN_TEST_PATH + 'y_train.npy')
 
 # Create dictionary to hold classifiers, it's names and the results of it's learning
-comp_models = {'CART': [DecisionTreeClassifier()], 'LR': [LogisticRegression()], 'LDA': [LinearDiscriminantAnalysis()],
-               'KNN': [KNeighborsClassifier()], 'NB': [GaussianNB()]}
+comp_models = {
+    'Decision_tree': [DecisionTreeClassifier()],
+    'Random_forest': [RandomForestClassifier()],
+    'MLP': [MLPClassifier()],
+    'AdaBoost': [AdaBoostClassifier()],
+    'Gauss': [GaussianNB()],
+    'QDA': [QuadraticDiscriminantAnalysis()],
+    'KNN': [KNeighborsClassifier()], 'NB': [GaussianNB()],
+    'SVC_lin': [SVC()]
+}
 
-# Train and compare models using matplotlib (box-plot)
-for name, model in comp_models.items():
-    kfold = model_selection.KFold(n_splits=8)
-    results = model_selection.cross_val_score(model[0], X_train_full, y_train_full, cv=kfold, scoring='accuracy')
-    comp_models[name].append(results)
-    print(f'{name}: {results.mean()} {results.std()}')
+scales = [i for i in range(1000, 15001, 1000)]
 
-for name, model in comp_models.items():
-    model[0].fit(X_train, y_train)
-    filename = MODELS_PATH + f'{name}.sav'
-    pickle.dump(model, open(filename, 'wb'))
+df = pd.DataFrame()
 
-# Build and save a plot
-fig = plt.figure()
-fig.suptitle('Box-plot of the results of different models')
-ax = fig.add_subplot(111)
-plt.boxplot([i[1] for i in comp_models.values()])
-ax.set_xticklabels(comp_models.keys())
-ax.grid(linewidth=0.5)
-plt.savefig(PLOTS_PATH + 'compare_models.png')
+# Train models and save its results
+for i in scales:
+    new_df = pd.DataFrame.from_dict(comp_models, orient='index')
+    new_df.drop(columns=[0], inplace=True)
+    new_df.reset_index(inplace=True)
+    results_l, results_m = [], []
+    for name, model in comp_models.items():
+        kfold = model_selection.KFold(n_splits=8)
+        results = model_selection.cross_val_score(model[0], X_train_full[:i], y_train_full[:i], cv=kfold,
+                                                  scoring='accuracy')
+        results_l.append(results)
+        results_m.append(results.mean())
+        print(f'{name} for {i} samples: {results.mean()} {results.std()}')
+
+    new_df['values_list'], new_df['values_mean'], new_df['amount'] = results_l, results_m, [i for j in
+                                                                                            range(len(results_l))]
+    df = df.append(new_df)
+
+# Build and save a box-plot for all classifiers by number of samples
+for i in range(len(scales)):
+    fig = plt.figure(figsize=(15, 10))
+    fig.suptitle(f'Box-plot of the results of different models for {scales[i]} samples')
+    ax = fig.add_subplot(111)
+    plt.boxplot(df[df['amount'] == scales[i]].values_list.values)
+    ax.set_xticklabels(comp_models.keys())
+    ax.grid(linewidth=0.5)
+    plt.savefig(PLOTS_PATH + f'comp/compare_models{scales[i]}.png', dpi=200)
+    plt.show()
+
+# Build and save a line-plot for all classifiers using number of samples as x-axis and score of model as y-axis
+mean_by_classifier = df.groupby(['index', 'amount', 'values_mean']).size()
+mean_by_classifier = mean_by_classifier.reset_index()
+mean_by_classifier.drop(columns=[0], inplace=True)
+mean_by_classifier.rename(columns={'index': 'classifier'}, inplace=True)
+plt.figure(figsize=(15, 8))
+sns.lineplot(x='amount',
+             y='values_mean',
+             hue='classifier',
+             data=mean_by_classifier).set(title='Score by classifier by number of samples',
+                                          xlabel='Number of samples',
+                                          ylabel='Score')
+plt.savefig(PLOTS_PATH + "compare_models_lineplot.png")
 plt.show()
