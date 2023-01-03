@@ -1,5 +1,6 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
 import numpy as np
 import pandas as pd
 from environs import Env
@@ -40,8 +41,8 @@ parameters_tree = {'criterion': ['gini', 'entropy', 'log_loss'],
                    'min_samples_split': [2, 3, 4]}
 dec_tree = search(DecisionTreeClassifier, parameters_tree, 'decision_tree_params')
 
-print('Train score : %.3f' % dec_tree.score(X_train, y_train))
-print('Test score : %.3f' % dec_tree.score(X_test, y_test))
+print(f'Train score : {cross_val_score(estimator=dec_tree, X=X_train, y=y_train, cv=5, n_jobs=4)}')
+print(f'Test score : {cross_val_score(estimator=dec_tree, X=X_test, y=y_test, cv=5, n_jobs=4)}')
 
 # Optimize hyper-params for RandomForestClassifier
 parameters_forest = {'criterion': ['gini', 'entropy', 'log_loss'],
@@ -52,5 +53,5 @@ parameters_forest = {'criterion': ['gini', 'entropy', 'log_loss'],
                      'min_samples_split': [2, 3, 4]}
 ran_forest = search(RandomForestClassifier, parameters_forest, 'random_forest_params')
 
-print('Train score : %.3f' % ran_forest.score(X_train, y_train))
-print('Test score : %.3f' % ran_forest.score(X_test, y_test))
+print(f'Train score : {cross_val_score(estimator=ran_forest, X=X_train, y=y_train, cv=5, n_jobs=4)}')
+print(f'Test score : {cross_val_score(estimator=ran_forest, X=X_test, y=y_test, cv=5, n_jobs=4)}')
