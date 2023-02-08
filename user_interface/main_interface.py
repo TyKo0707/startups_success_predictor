@@ -1,5 +1,5 @@
 from tkinter import *
-import create_model.predict_input as predict
+import create_model.main_classifier.predict_input as predict
 
 root = Tk()
 

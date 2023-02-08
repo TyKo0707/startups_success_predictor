@@ -6342,7 +6342,7 @@ company_index,name,category_list,funding_total_usd,status,region,funding_rounds,
 6341,Chartbeat,Analytics|Real Time,32100000,1,North America,5,2009-04-02
 6342,Chartboost,Advertising|Apps|App Stores|Games|iPhone|Marketplaces|Monetization,21000000,1,North America,3,2011-02-01
 6343,Chartcube,Analytics|Collaboration|Curated Web|Data Visualization|Freemium|Mobile,4550000,1,North America,3,2013-01-01
-6344,Charter Communications,Internet|Telecommunications|Television|Video,5162513431,2,North America,2,1993-01-01
+6344,Charter Comm.,Internet|Telecommunications|Television|Video,5162513431,2,North America,2,1993-01-01
 6345,Charter Venture Capital,Venture Capital,30000000,1,North America,1,1982-01-01
 6346,ChartIQ,iPad|Software|Stock Exchanges|Web Development,850000,1,North America,1,2012-01-01
 6347,ChartITright,Biotechnology,600000,1,North America,1,2010-01-01
@@ -12772,7 +12772,7 @@ company_index,name,category_list,funding_total_usd,status,region,funding_rounds,
 12771,Freeosk Inc,Advertising,6000000,1,North America,1,2010-01-01
 12772,Freeppie,Hotels|Restaurants|Social Network Media|Tourism|Travel,650000,1,Europe,2,2013-07-04
 12773,FreePriceAlerts,Curated Web,2500000,1,North America,1,2008-01-01
-12774,Freescale Semiconductor,Semiconductors,17600000000,2,North America,1,1953-01-01
+12774,Freescale Semiconduct.,Semiconductors,17600000000,2,North America,1,1953-01-01
 12775,Freespee,Advertising,6963460,1,Europe,3,2009-01-01
 12776,FreeWavz,Fitness|Health and Wellness|Medical Devices,100000,1,North America,1,2012-01-01
 12777,Webs,Curated Web,12000000,1,North America,2,2001-06-01
@@ -28086,7 +28086,7 @@ company_index,name,category_list,funding_total_usd,status,region,funding_rounds,
 28085,Relevare Pharmaceuticals,Biotechnology,750000,1,Oceania,1,2003-01-01
 28086,Relevvant,Analytics|Big Data|Email|Mobile|SaaS|Sales and Marketing|SMS|Social Media,675000,1,North America,1,2011-05-01
 28087,RELEX,Software|Supply Chain Management,22394159,1,Europe,1,2005-05-01
-28088,Reliance Jio Infocomm Ltd.,Development Platforms|Information Services|Information Technology,3000000000,1,Asia,3,2007-01-01
+28088,Jio Infocomm Ltd.,Development Platforms|Information Services|Information Technology,3000000000,1,Asia,3,2007-01-01
 28089,Reliant Technologies,Biotechnology,15000000,1,North America,1,2001-01-01
 28090,ReliantHeart,Medical Devices,10800000,1,North America,1,2013-01-01
 28091,Relievant Medsystems,Biotechnology,55050000,1,North America,3,2004-01-01
@@ -36216,7 +36216,7 @@ company_index,name,category_list,funding_total_usd,status,region,funding_rounds,
 36215,Verivo Software,Enterprise Software,29900000,1,North America,5,1998-01-01
 36216,Verivue,Communications Infrastructure|Content Delivery|Networking|Video on Demand|Video Streaming,85000000,1,North America,3,2006-11-13
 36217,Verix,Analytics,12700000,1,North America,1,2003-01-01
-36218,Verizon Communications,Communications Infrastructure|Information Technology|Mobile,30079503000,2,North America,5,1983-10-07
+36218,Verizon Comm.,Communications Infrastructure|Information Technology|Mobile,30079503000,2,North America,5,1983-10-07
 36219,Vermillion,Biotechnology|Diagnostics|Health Care,84392358,2,North America,4,1993-01-01
 36220,Vermont Genetics Network,Education,17800000,1,North America,1,2001-01-01
 36221,Vero Analytics,Analytics|Big Data|Business Intelligence|Enterprise Software,550000,1,North America,1,2014-01-01
@@ -38643,7 +38643,7 @@ company_index,name,category_list,funding_total_usd,status,region,funding_rounds,
 38642,Zebra Biologics,Biotechnology,9000170,1,North America,1,2013-01-01
 38643,Zebra Imaging,Games,24469821,1,North America,5,1996-01-01
 38644,Zebra Medical Vision Ltd,Computer Vision|Human Computer Interaction|Medical,8000000,1,Asia,1,2014-01-01
-38645,Zebra Technologies,Enterprise Software,2000000000,2,North America,1,1991-01-01
+38645,Zebra Tech.,Enterprise Software,2000000000,2,North America,1,1991-01-01
 38646,Zebtab,Content|Entertainment|Gadget|Games|Music|News|Publishing|Software|Sports|Television|Video|Video Streaming|Web Development|Web Tools,280000,0,Europe,1,2005-08-01
 38647,Zecco,Brokers|Finance|Stock Exchanges|Trading,35000000,1,North America,3,2006-07-04
 38648,Zecter,Document Management|File Sharing|Storage|Web Hosting,2515000,1,North America,3,2007-06-01
