@@ -1,5 +1,6 @@
 from tkinter import *
 import create_model.main_classifier.predict_input as predict
+from create_model.predict_category import find_correct_category
 
 root = Tk()
 
@@ -40,7 +41,7 @@ def click():
     input_data.append(entry1.get())
     input_data.append(entry2.get())
     input_data.append(entry3.get())
-    input_data.append(entry4.get())
+    input_data.append(find_correct_category(entry4.get()))
     prediction = predict.predict_output(input_data)
     new_root = Tk()
     title = Label(new_root, text='Most likely you company will').grid(row=0, pady=10, padx=5)

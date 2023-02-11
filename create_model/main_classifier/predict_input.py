@@ -37,7 +37,7 @@ def predict_output(data):
                                                   .value]])[0][0]
     input_data[2] = date_foundation
 
-    input_data[9] = 1
+    input_data[9 + data[4]] = 1
 
     # return [round((i * 100), 2) for i in model.predict(input_data.reshape(1, -1))[0]]
     return model.predict_proba(input_data.reshape(1, -1))[0].argmax()
